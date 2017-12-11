@@ -422,12 +422,12 @@ final class Locale
       foreach ( $acceptedKeys as $key )
       {
 
-         if ( ! isset( $requestData[ $key  ] ) )
+         if ( ! isset( $requestData[ $key ] ) )
          {
             continue;
          }
 
-         $language = \trim( $requestData[ 'language' ] );
+         $language = \trim( $requestData[ $key ] );
 
          break;
 

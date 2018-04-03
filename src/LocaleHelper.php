@@ -4,7 +4,7 @@
  * @copyright   ©2017, Niirrty
  * @package     Niirrty\Locale
  * @since       2017-10-31
- * @version     0.1.0
+ * @version     0.2.0
  */
 
 
@@ -25,7 +25,8 @@ abstract class LocaleHelper
 
    // <editor-fold desc="// – – –   P U B L I C   S T A T I C   F I E L D S   – – – – – – – – – – – – – – – – – –">
 
-   # <editor-fold desc=" - $WindowsLocales - ">
+   # <editor-fold desc=" - WIN_LOCALES - ">
+
    /**
     * With this array you are able to convert a windows typical locale definition like
     * <code style="color: blue">German_Germany</code> to a LCID like <code style="color: blue">de_DE</code>
@@ -34,7 +35,7 @@ abstract class LocaleHelper
     *
     * @var    array
     */
-   public static $WindowsLocales = [
+   public const WIN_LOCALES = [
       // Locale Language  => LCID
       'afrikaans' => 'af',  'albanian' => 'sq', 'amharic' => 'am', 'arabic_algeria' => 'ar_DZ',
       'arabic_bahrain' => 'ar_BH', 'arabic_egypt' => 'ar_EG', 'arabic_iraq' => 'ar_IQ',
@@ -84,16 +85,18 @@ abstract class LocaleHelper
       'ukrainian' => 'uk', 'urdu' => 'ur', 'uzbek_cyrillic' => 'uz_UZ', 'uzbek_latin' => 'uz_UZ',
       'vietnamese' => 'vi', 'welsh' => 'cy', 'xhosa' => 'xh', 'yiddish' => 'yi', 'zulu' => 'zu'
    ];
+
    # </editor-fold>
 
-   # <editor-fold desc=" - $LanguagesAndIds - ">
+   # <editor-fold desc=" - LANGUAGES_AND_IDS - ">
+   
    /**
     * Defines the english named languages as keys (in lower case) and the associated 2 char language ids as values
     * (also in lower case).
     *
     * @var    array
     */
-   public static $LanguagesAndIds = [
+   public const LANGUAGES_AND_IDS = [
       'german' => 'de', 'french' => 'fr', 'english' => 'en', 'spanish' => 'es', 'czech' => 'cs', 'polish' => 'pl',
       'belarusian' => 'be', 'dutch' => 'nl', 'portuguese' => 'pt', 'arabic' => 'ar', 'basque' => 'eu',
       'bulgarian' => 'bg', 'catalan' => 'ca', 'chinese' => 'zh', 'croatian' => 'hr', 'danish' => 'da',
@@ -107,16 +110,18 @@ abstract class LocaleHelper
       'japanese' => 'ja', 'indonesian' => 'id', 'icelandic' => 'is', 'italian' => 'it', 'ita' => 'it',
       'russian' => 'ru'
    ];
+   
    # </editor-fold>
 
-   # <editor-fold desc=" - $LocalizedLanguagesAndIds - ">
+   # <editor-fold desc=" - LC_LANGUAGES_AND_IDS - ">
+   
    /**
     * Defines the localized named languages as keys and the associated 2 char language ids as values
     * (in lower case).
     *
     * @var    array
     */
-   public static $LocalizedLanguagesAndIds = [
+   public const LC_LANGUAGES_AND_IDS = [
       'deutsch' => 'de', 'français' => 'fr', 'english' => 'en', 'español' => 'es', 'čeština' => 'cs',
       'polski' => 'pl', 'беларускі' => 'be', 'nederlands' => 'nl', 'português' => 'pt', 'العربية' => 'ar',
       'basque' => 'eu', 'български' => 'bg', 'català' => 'ca', '中国的' => 'zh', 'hrvatski' => 'hr', 'dansk' => 'da',
@@ -129,16 +134,18 @@ abstract class LocaleHelper
       'kyrgyz' => 'ky', '한국의' => 'ko', 'konkani' => 'kok', 'kazakh' => 'kk', 'ಕನ್ನಡ' => 'kn',
       '日本の' => 'ja', 'indonesia' => 'id', 'Icelandic' => 'is', 'italiano' => 'it', 'русский' => 'ru'
    ];
+
    # </editor-fold>
 
-   # <editor-fold desc=" - $LanguageCountries - ">
+   # <editor-fold desc=" - LANGUAGE_COUNTRIES - ">
+   
    /**
     * Here all 2 char language IDs are defined as the keys (lowercase). The values are numeric indicated arrays
     * containing a 2 char country ID, associated with the language (uppercase)
     *
     * @var    array
     */
-   public static $LanguageCountries = [
+   public const LANGUAGE_COUNTRIES = [
       'es' => array('ES', 'AR', 'BO', 'CL', 'CO', 'CR', 'DO', 'EC', 'SV', 'GT', 'HN', 'MX', 'NI', 'PA', 'PY', 'PE', 'PR', 'UY', 'VE'),
       'ar' => array('AE', 'BH', 'DZ', 'EG', 'IQ', 'JO', 'KW', 'LB', 'IN', 'LY', 'MA', 'OM', 'QA', 'SA', 'SY', 'TN', 'YE'),
       'en' => array('US', 'AU', 'BZ', 'CA', 'CB', 'IE', 'JM', 'NZ', 'PH', 'ZA', 'TT', 'GB', 'ZW'),
@@ -164,13 +171,15 @@ abstract class LocaleHelper
       'id' => array('ID'),       'is' => array('IS'),       'it' => array('IT'),
       'ru' => array('RU')
    ];
+   
    # </editor-fold>
 
-   # <editor-fold desc=" - $Countries - ">
+   # <editor-fold desc=" - COUNTRIES - ">
+
    /**
     * @var array
     */
-   public static $Countries = array(
+   public const COUNTRIES = array(
       'DE' => 'germany', 'FR' => 'france', 'ES' => 'spain', 'CZ' => 'czechia',
       'PL' => 'poland', 'NL' => 'netherlands', 'PT' => 'portugal', 'BG' => 'bulgaria',
       'AR' => 'argentina', 'BO' => 'bolivia', 'CL' => 'chile', 'CO' => 'colombia', 'CR' => 'costa rica',
@@ -194,6 +203,7 @@ abstract class LocaleHelper
       'LT' => 'lithuania', 'LV' => 'latvia', 'KG' => 'kyrgyzstan', 'KR' => 'korea', 'KZ' => 'jazakhstan',
       'JP' => 'japan', 'ID' => 'indonesia', 'IS' => 'island'
    );
+
    # </editor-fold>
 
    // </editor-fold>
@@ -231,13 +241,13 @@ abstract class LocaleHelper
       );
 
       // If locale definition is unknown return FALSE
-      if ( ! isset( self::$WindowsLocales[ $localeDef ] ) )
+      if ( ! isset( self::WIN_LOCALES[ $localeDef ] ) )
       {
          return false;
       }
 
       // return the LCID
-      return self::$WindowsLocales[ $localeDef ] . $charset;
+      return self::WIN_LOCALES[ $localeDef ] . $charset;
 
    }
 
@@ -276,7 +286,7 @@ abstract class LocaleHelper
       $lcidStr = \strtolower( $localeDef[ 0 ] ) . '_' . \strtoupper( $localeDef[ 1 ] );
 
       // If defined Locale is unknown return false
-      if ( false === ( $winLocale = \array_search( $lcidStr, self::$WindowsLocales, true ) ) )
+      if ( false === ( $winLocale = \array_search( $lcidStr, self::WIN_LOCALES, true ) ) )
       {
          return false;
       }
@@ -303,26 +313,26 @@ abstract class LocaleHelper
       }
 
       // If its defined as known language name (english) return the known LID
-      if ( isset( self::$LanguagesAndIds[ $language ] ) )
+      if ( isset( self::LANGUAGES_AND_IDS[ $language ] ) )
       {
-         return self::$LanguagesAndIds[ $language ];
+         return self::LANGUAGES_AND_IDS[ $language ];
       }
 
       // If its defined as known localized language name return the known LID
-      if ( isset( self::$LocalizedLanguagesAndIds[ $language ] ) )
+      if ( isset( self::LC_LANGUAGES_AND_IDS[ $language ] ) )
       {
-         return self::$LocalizedLanguagesAndIds[ $language ];
+         return self::LC_LANGUAGES_AND_IDS[ $language ];
       }
 
       // Test also in lowercase
       $languageLower = \strtolower( $language );
-      if ( isset( self::$LanguagesAndIds[ $languageLower ] ) )
+      if ( isset( self::LANGUAGES_AND_IDS[ $languageLower ] ) )
       {
-         return self::$LanguagesAndIds[ $languageLower ];
+         return self::LANGUAGES_AND_IDS[ $languageLower ];
       }
-      if ( isset( self::$LocalizedLanguagesAndIds[ $languageLower ] ) )
+      if ( isset( self::LC_LANGUAGES_AND_IDS[ $languageLower ] ) )
       {
-         return self::$LocalizedLanguagesAndIds[ $languageLower ];
+         return self::LC_LANGUAGES_AND_IDS[ $languageLower ];
       }
 
       // Return FALSE, if $language is unknown
@@ -349,7 +359,7 @@ abstract class LocaleHelper
       $cidUpper = \strtoupper( $cid );
 
       // Find it
-      foreach ( self::$LanguageCountries as $lid => $data )
+      foreach ( self::LANGUAGE_COUNTRIES as $lid => $data )
       {
          // Return it if found
          if ( \in_array( $cidUpper, $data, true ) )
@@ -364,15 +374,21 @@ abstract class LocaleHelper
    }
 
    /**
-    * Expands the defined LCID (Language-Country ID) to 3 elements LID, CID and charset.
+    * Expands the defined LCID (Language-Country ID) to 3 elements 'language', 'country' and 'charset'.
+    *
+    * If one of the elements is not defined null is the used value of it.
     *
     * @param  string $lcid    The LCID to expand
-    * @param  string $lid     Returns the resulting LID (Language ID)
-    * @param  string $cid     Returns the resulting CID (Country ID)
-    * @param  string $charset Returns the resulting Charset (can be empty!)
+    * @return array Returns a associative array with keys 'language', 'country' and 'charset'.
     */
-   public static function ExpandLCID( string $lcid, string &$lid, string &$cid, string &$charset )
+   public static function ExpandLCID( string $lcid ) : array
    {
+
+      $output = [
+         'language' => null,
+         'country'  => null,
+         'charset'  => null
+      ];
 
       // ignore things like @euro at the end of a LCID
       $tmp1    = \explode( '@', $lcid, 2 );
@@ -380,27 +396,37 @@ abstract class LocaleHelper
       // Split at first dot '.' to max 2 elements
       $tmp2    = \explode( '.', $tmp1[ 0 ], 2 );
 
-      // Init resulting values with empty strings
-      $charset = '';
-      $cid     = '';
-
       // If charset is defined.
       if ( 2 === \count( $tmp2 ) )
       {
-         $charset = $tmp2[ 1 ];
+         $output[ 'charset' ] = $tmp2[ 1 ];
       }
 
       // Split the rest (before the charset) at first '_' or '-' into max. 2 elements
       $result = \preg_split( '~[_-]~', $tmp2[ 0 ], 2 );
 
       // get the LID
-      $lid = $result[0];
+      $output[ 'language' ] = $result[0];
 
       // Get the CID if defined
       if ( 2 === \count( $result ) )
       {
-         $cid = $result[1];
+         $output[ 'country' ] = $result[1];
       }
+
+      return $output;
+
+   }
+
+   /**
+    * Gets if currently Widows is the underlying OS.
+    *
+    * @return bool
+    */
+   public static function IsWindowsOS() : bool
+   {
+
+      return '\\' === \DIRECTORY_SEPARATOR;
 
    }
 

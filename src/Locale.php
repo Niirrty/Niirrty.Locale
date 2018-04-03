@@ -4,7 +4,7 @@
  * @copyright   ©2017, Niirrty
  * @package     Niirrty\Locale
  * @since       2017-10-31
- * @version     0.1.0
+ * @version     0.2.0
  */
 
 
@@ -122,7 +122,7 @@ final class Locale
       $this->_locales  = [];
 
       // For windows systems we are doing this way
-      if ( \DIRECTORY_SEPARATOR === '\\' &&
+      if ( LocaleHelper::IsWindowsOS() &&
          ( false !== ( $lcStr = LocaleHelper::ConvertLCIDToWin( (string) $this ) ) ) )
       {
 
@@ -220,6 +220,7 @@ final class Locale
 
       }
 
+      $this->_locales = \array_values( \array_unique( $this->_locales ) );
       // Set current before defined locales only for some date+time functionality. Rest in peace… for all other :-)
       \setlocale( \LC_TIME, $this->_locales );
 
@@ -355,23 +356,24 @@ final class Locale
 
          // Get URL path from $_SERVER[ 'REQUEST_URI' ] or $_SERVER[ 'SCRIPT_URL' ]
 
-         if ( \filter_has_var( \INPUT_SERVER, 'REQUEST_URI' ) )
+         if ( isset( $_SERVER[ 'REQUEST_URI' ] ) )
          {
-            $urlPath = \filter_input( \INPUT_SERVER, 'REQUEST_URI' );
+            $urlPath = $_SERVER[ 'REQUEST_URI' ];
          }
          else
          {
-            if ( ! \filter_has_var( \INPUT_SERVER, 'SCRIPT_URL' ) )
+            if ( ! isset( $_SERVER[ 'SCRIPT_URL' ] ) )
             {
                return false;
             }
-            $urlPath = \filter_input( \INPUT_SERVER, 'SCRIPT_URL' );
+            $urlPath = $_SERVER[ 'SCRIPT_URL' ];
          }
 
       }
 
       // IF the value does not match the required data format stop this method here
-      if ( ! \preg_match( '~^/([a-zA-Z]{2})([_-]([a-zA-Z]{2}))?/~', $urlPath, $matches ) )
+      //
+      if ( ! \preg_match( '~^/([a-zA-Z]{2})([_-]([a-zA-Z]{2})(\\.([a-zA-Z0-9-]+))?)?/~', $urlPath, $matches ) )
       {
          return false;
       }
@@ -381,9 +383,12 @@ final class Locale
       $cid = empty( $matches[ 2 ] )
          ? null
          : \strtoupper( $matches[ 3 ] );
+      $charset = empty( $matches[ 4 ] )
+         ? null
+         : $matches[ 5 ];
 
       // Everything is OK. Init the new instance and return TRUE
-      $refLocale = new Locale( $lid, $cid );
+      $refLocale = new Locale( $lid, $cid, $charset );
 
       return true;
 
@@ -417,7 +422,7 @@ final class Locale
 
       $requestData  = \array_change_key_case( $requestData , \CASE_LOWER );
       $acceptedKeys = \array_change_key_case( $acceptedKeys, \CASE_LOWER );
-      $language     = null;
+      $localeString = null;
 
       foreach ( $acceptedKeys as $key )
       {
@@ -427,15 +432,15 @@ final class Locale
             continue;
          }
 
-         $language = \trim( $requestData[ $key ] );
+         $localeString = \trim( $requestData[ $key ] );
 
          break;
 
       }
 
-      if ( empty( $language ) ) { return false; }
+      if ( empty( $localeString ) ) { return false; }
 
-      if ( ! \preg_match( '~^([a-zA-Z]{2})([_-]([a-zA-Z]{2}))?~', $language, $matches ) )
+      if ( ! \preg_match( '~^([a-zA-Z]{2})([_-]([a-zA-Z]{2})(\\.([a-zA-Z0-9-]+))?)?$~', $localeString, $matches ) )
       {
          return false;
       }
@@ -445,9 +450,12 @@ final class Locale
       $cid = empty( $matches[ 2 ] )
          ? null
          : \strtoupper( $matches[ 3 ] );
+      $charset = empty( $matches[ 4 ] )
+         ? null
+         : $matches[ 5 ];
 
       // Everything is OK. Init the new instance and return TRUE
-      $refLocale = new Locale( $lid, $cid );
+      $refLocale = new Locale( $lid, $cid, $charset );
 
       return true;
 
@@ -475,12 +483,13 @@ final class Locale
       $lid = ''; $cid = ''; $charset = '';
 
       // Handle windows different from other OS
-      if ( \DIRECTORY_SEPARATOR === '\\' )
+      if ( LocaleHelper::IsWindowsOS() )
       {
 
          $tmp = \explode( ';', $lcString );
 
          $foundLocale = false;
+         $localeData  = [ 'language' => null, 'country' => null, 'charset' => null ];
 
          // Loop the exploded elements
          foreach ( $tmp as $element )
@@ -498,9 +507,9 @@ final class Locale
                   continue;
                }
                // Get the elements of the current LCID
-               LocaleHelper::ExpandLCID( $lcid, $lid, $cid, $charset );
+               $localeData = LocaleHelper::ExpandLCID( $lcid );
                // Create a new instance and return TRUE
-               $refLocale = new Locale( $lid, $cid, $charset );
+               $refLocale = new Locale( $localeData[ 'language' ], $localeData[ 'country' ], $localeData[ 'charset' ] );
                return true;
             }
 
@@ -517,8 +526,7 @@ final class Locale
             }
 
             // Get the elements of the current LCID
-            LocaleHelper::ExpandLCID( $lcid, $lid, $cid, $charset );
-
+            $localeData  = LocaleHelper::ExpandLCID( $lcid );
             $foundLocale = true;
 
             break;
@@ -527,7 +535,7 @@ final class Locale
 
          if ( $foundLocale )
          {
-            $refLocale = new Locale( $lid, $cid, $charset );
+            $refLocale = new Locale( $localeData[ 'language' ], $localeData[ 'country' ], $localeData[ 'charset' ] );
             return true;
          }
 
@@ -543,9 +551,9 @@ final class Locale
          return false;
       }
 
-      LocaleHelper::ExpandLCID( $lcString, $lid, $cid, $charset );
+      $localeData = LocaleHelper::ExpandLCID( $lcString );
 
-      $refLocale = new Locale( $lid, $cid, $charset );
+      $refLocale = new Locale( $localeData[ 'language' ], $localeData[ 'country' ], $localeData[ 'charset' ] );
 
       return true;
 
@@ -561,13 +569,13 @@ final class Locale
    {
 
       // If init by browser info is disabled, or the required $_SERVER['HTTP_ACCEPT_LANGUAGE'] is not defined
-      if ( ! \filter_has_var( \INPUT_SERVER, 'HTTP_ACCEPT_LANGUAGE' ) )
+      if ( ! isset( $_SERVER[ 'HTTP_ACCEPT_LANGUAGE' ] ) )
       {
          return false;
       }
 
       // Format like: de-de,de;q=0.8,en-us;q=0.5,en;q=0.3
-      $tmp = \explode( ',', \filter_input( \INPUT_SERVER , 'HTTP_ACCEPT_LANGUAGE' ) );
+      $tmp = \explode( ',', $_SERVER[ 'HTTP_ACCEPT_LANGUAGE' ] );
 
       // Iterate over each exploded element
       foreach ( $tmp as $t )
@@ -658,6 +666,16 @@ final class Locale
          return $refLocale;
       }
 
+      if ( Locale::TryParseBrowserInfo( $refLocale ) )
+      {
+         return $refLocale;
+      }
+
+      if ( Locale::TryParseSystem( $refLocale ) )
+      {
+         return $refLocale;
+      }
+
       if ( \count( $acceptedRequestParams ) > 0 )
       {
 
@@ -677,16 +695,6 @@ final class Locale
             return $refLocale;
          }
 
-      }
-
-      if ( Locale::TryParseBrowserInfo( $refLocale ) )
-      {
-         return $refLocale;
-      }
-
-      if ( Locale::TryParseSystem( $refLocale ) )
-      {
-         return $refLocale;
       }
 
       return $fallbackLocale;
@@ -718,7 +726,7 @@ final class Locale
    }
 
    // </editor-fold>
-   
+
 
 }
 

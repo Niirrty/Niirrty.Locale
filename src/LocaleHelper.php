@@ -1,10 +1,10 @@
 <?php
 /**
  * @author      Ni Irrty <niirrty+code@gmail.com>
- * @copyright   © 2017-2020, Niirrty
+ * @copyright   © 2017-2021, Niirrty
  * @package     Niirrty\Locale
  * @since       2017-10-31
- * @version     0.3.0
+ * @version     0.4.0
  */
 
 
@@ -23,10 +23,9 @@ abstract class LocaleHelper
 {
 
 
-    // <editor-fold desc="// – – –   P U B L I C   S T A T I C   F I E L D S   – – – – – – – – – – – – – – – – – –">
+    #region // – – –   P U B L I C   S T A T I C   F I E L D S   – – – – – – – – – – – – – – – – – –
 
-    # <editor-fold desc=" - WIN_LOCALES - ">
-
+    #region // - WIN_LOCALES -
     /**
      * With this array you are able to convert a windows typical locale definition like
      * <code style="color: blue">German_Germany</code> to a LCID like <code style="color: blue">de_DE</code>
@@ -85,11 +84,9 @@ abstract class LocaleHelper
         'ukrainian' => 'uk', 'urdu' => 'ur', 'uzbek_cyrillic' => 'uz_UZ', 'uzbek_latin' => 'uz_UZ',
         'vietnamese' => 'vi', 'welsh' => 'cy', 'xhosa' => 'xh', 'yiddish' => 'yi', 'zulu' => 'zu'
     ];
+    #endregion
 
-    # </editor-fold>
-
-    # <editor-fold desc=" - LANGUAGES_AND_IDS - ">
-
+    #region // - LANGUAGES_AND_IDS -
     /**
      * Defines the english named languages as keys (in lower case) and the associated 2 char language ids as values
      * (also in lower case).
@@ -110,11 +107,9 @@ abstract class LocaleHelper
         'japanese' => 'ja', 'indonesian' => 'id', 'icelandic' => 'is', 'italian' => 'it', 'ita' => 'it',
         'russian' => 'ru'
     ];
+    #endregion
 
-    # </editor-fold>
-
-    # <editor-fold desc=" - LC_LANGUAGES_AND_IDS - ">
-
+    #region // - LC_LANGUAGES_AND_IDS -
     /**
      * Defines the localized named languages as keys and the associated 2 char language ids as values
      * (in lower case).
@@ -134,11 +129,9 @@ abstract class LocaleHelper
         'kyrgyz' => 'ky', '한국의' => 'ko', 'konkani' => 'kok', 'kazakh' => 'kk', 'ಕನ್ನಡ' => 'kn',
         '日本の' => 'ja', 'indonesia' => 'id', 'Icelandic' => 'is', 'italiano' => 'it', 'русский' => 'ru'
     ];
+    #endregion
 
-    # </editor-fold>
-
-    # <editor-fold desc=" - LANGUAGE_COUNTRIES - ">
-
+    #region // - LANGUAGE_COUNTRIES -
     /**
      * Here all 2 char language IDs are defined as the keys (lowercase). The values are numeric indicated arrays
      * containing a 2 char country ID, associated with the language (uppercase)
@@ -171,15 +164,13 @@ abstract class LocaleHelper
         'id' => array('ID'),       'is' => array('IS'),       'it' => array('IT'),
         'ru' => array('RU')
     ];
+    #endregion
 
-    # </editor-fold>
-
-    # <editor-fold desc=" - COUNTRIES - ">
-
+    #region // - COUNTRIES -
     /**
      * @var array
      */
-    public const COUNTRIES = array(
+    public const COUNTRIES = [
         'DE' => 'germany', 'FR' => 'france', 'ES' => 'spain', 'CZ' => 'czechia',
         'PL' => 'poland', 'NL' => 'netherlands', 'PT' => 'portugal', 'BG' => 'bulgaria',
         'AR' => 'argentina', 'BO' => 'bolivia', 'CL' => 'chile', 'CO' => 'colombia', 'CR' => 'costa rica',
@@ -202,24 +193,23 @@ abstract class LocaleHelper
         'NO' => 'norway', 'MN' => 'mongolia', 'MY' => 'malaysia', 'BN' => 'brunei', 'MK' => 'macedonia',
         'LT' => 'lithuania', 'LV' => 'latvia', 'KG' => 'kyrgyzstan', 'KR' => 'korea', 'KZ' => 'jazakhstan',
         'JP' => 'japan', 'ID' => 'indonesia', 'IS' => 'island'
-    );
+    ];
+    #endregion
 
-    # </editor-fold>
-
-    // </editor-fold>
+    #endregion
 
 
-    // <editor-fold desc="// – – –   P U B L I C   S T A T I C   M E T H O D S   – – – – – – – – – – – – – – – – –">
+    #region // – – –   P U B L I C   S T A T I C   M E T H O D S   – – – – – – – – – – – – – – – – –
 
     /**
      * Converts a windows locale definition like <code style="color: blue">German_Germany</code> or
      * <code style="color: blue">German-Luxembourg.utf-8</code> to a LCID like <code style="color: blue">de_DE</code>
      * or <code style="color: blue">de_LU.utf-8</code>.
      *
-     * @param  string $windowsLocaleDefinition THe locale definition in windows style
-     * @return string Returns the LCID, or (bool)FALSE if $windowsLocaleDefinition is not a win locale definition.
+     * @param string $windowsLocaleDefinition THe locale definition in windows style
+     * @return bool|string Returns the LCID, or (bool)FALSE if $windowsLocaleDefinition is not a win locale definition.
      */
-    public static function ConvertWinToLCID( string $windowsLocaleDefinition )
+    public static function ConvertWinToLCID( string $windowsLocaleDefinition ): bool|string
     {
 
         // split the definition, at first dot '.' into 2 elements
@@ -256,10 +246,10 @@ abstract class LocaleHelper
      * to a windows locale definition like <code style="color: blue">German_Germany</code> or
      * <code style="color: blue">German-Luxembourg.utf-8</code>.
      *
-     * @param  string $lcId The LCID
-     * @return string Returns the windows locale definition, or (bool)FALSE if $lcid is not a known LCID.
+     * @param string $lcId The LCID
+     * @return bool|string Returns the windows locale definition, or (bool)FALSE if $lcid is not a known LCID.
      */
-    public static function ConvertLCIDToWin( string $lcId )
+    public static function ConvertLCIDToWin( string $lcId ): bool|string
     {
 
         // Split at first '@' into max. 2 elements
@@ -300,10 +290,10 @@ abstract class LocaleHelper
      * Converts a language definition to a ISO 2 char language ID. $language can be a english language name, or a
      * language name in the language it self (e.g.: deutsch or русский)
      *
-     * @param  string $language The language definition.
-     * @return string Return the language ID or (bool)FALSE if no ID is found.
+     * @param string $language The language definition.
+     * @return bool|string Return the language ID or (bool)FALSE if no ID is found.
      */
-    public static function ToLID( string $language )
+    public static function ToLID( string $language ): bool|string
     {
 
         // If language is defined by 2 characters (a-z) directly return it in lowercase
@@ -343,10 +333,10 @@ abstract class LocaleHelper
     /**
      * Returns the LID (2 char language ID) associated to the country with the defined CID (2 char country ID)
      *
-     * @param  string $cid The 2 char country ID (e.g.: DE, FR, etc)
-     * @return string Returns the 2 char language ID (LID) or (bool)FALSE if $cid is unknown.
+     * @param string $cid The 2 char country ID (e.g.: DE, FR, etc)
+     * @return bool|string Returns the 2 char language ID (LID) or (bool)FALSE if $cid is unknown.
      */
-    public static function CIDToLID( string $cid )
+    public static function CIDToLID( string $cid ): bool|string
     {
 
         // If $cid is not defined by 2 characters in range a-zA-Z it returns FALSE
@@ -385,9 +375,9 @@ abstract class LocaleHelper
     {
 
         $output = [
-            'language' => null,
-            'country'  => null,
-            'charset'  => null
+            'language' => '',
+            'charset'  => '',
+            'country'  => ''
         ];
 
         // ignore things like @euro at the end of a LCID
@@ -396,14 +386,14 @@ abstract class LocaleHelper
         // Split at first dot '.' to max 2 elements
         $tmp2    = \explode( '.', $tmp1[ 0 ], 2 );
 
+        // Split the rest (before the charset) at first '_' or '-' into max. 2 elements
+        $result = \preg_split( '~[_-]~', $tmp2[ 0 ], 2 );
+
         // If charset is defined.
         if ( 2 === \count( $tmp2 ) )
         {
             $output[ 'charset' ] = $tmp2[ 1 ];
         }
-
-        // Split the rest (before the charset) at first '_' or '-' into max. 2 elements
-        $result = \preg_split( '~[_-]~', $tmp2[ 0 ], 2 );
 
         // get the LID
         $output[ 'language' ] = $result[0];
@@ -430,7 +420,7 @@ abstract class LocaleHelper
 
     }
 
-    // </editor-fold>
+    #endregion
 
 
 }

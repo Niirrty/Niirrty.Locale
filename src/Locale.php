@@ -1,10 +1,10 @@
 <?php
 /**
  * @author      Ni Irrty <niirrty+code@gmail.com>
- * @copyright   © 2017-2020, Niirrty
+ * @copyright   © 2017-2021, Niirrty
  * @package     Niirrty\Locale
  * @since       2017-10-31
- * @version     0.3.0
+ * @version     0.4.0
  */
 
 
@@ -58,67 +58,43 @@ final class Locale
 {
 
 
-    // <editor-fold desc="// – – –   P R I V A T E   F I E L D S   – – – – – – – – – – – – – – – – – – – – – – – –">
-
-    /**
-     * The current used language (2 characters in lower case)
-     *
-     * @type   string
-     */
-    private $_language;
-
-    /**
-     * The current used Country (2 characters in upper case)
-     *
-     * @type   string
-     */
-    private $_country;
-
-    /**
-     * A optional charset defined by the locale.
-     *
-     * @type   string
-     */
-    private $_charset;
+    #region // – – –   P R I V A T E   F I E L D S   – – – – – – – – – – – – – – – – – – – – – – – –
 
     /**
      * All current used locale strings
      *
      * @type   array
      */
-    private $_locales;
+    private array $_locales;
 
-    // </editor-fold>
+    #endregion
 
 
-    // <editor-fold desc="// – – –   P R I V A T E   S T A T I C   F I E L D S   – – – – – – – – – – – – – – – – –">
+    #region // – – –   P R I V A T E   S T A T I C   F I E L D S   – – – – – – – – – – – – – – – – –
 
     /**
-     * The global locale instance
+     * The global locale instance, if assigned
      *
-     * @var Locale
+     * @var Locale|null
      */
-    private static $_instance;
+    private static ?Locale $_instance;
 
-    // </editor-fold>
+    #endregion
 
 
-    // <editor-fold desc="// – – –   P U B L I C   C O N S T R U C T O R   – – – – – – – – – – – – – – – – – – – –">
+    #region // – – –   P U B L I C   C O N S T R U C T O R   – – – – – – – – – – – – – – – – – – – –
 
     /**
      * Init a new instance
      *
-     * @param  string      $language The language id (e.g. 'de')
-     * @param  string|null $country  The optional country id (e.g. 'AT')
-     * @param  string|null $charset  The optional charset (e.g. 'UTF-8')
+     * @param  string $language The current used language (2 characters in lower case. e.g.: 'de')
+     * @param  string $country  The optional country id (2 characters in upper case. e.g.: 'AT')
+     * @param  string $charset  The optional charset (e.g. 'UTF-8')
      */
-    public function __construct( string $language, ?string $country = null, ?string $charset = null )
+    public function __construct(
+        private string $language, private string $country = '', private string $charset = '' )
     {
 
-        // Init all class fields
-        $this->_language = $language;
-        $this->_country  = $country ?? '';
-        $this->_charset  = $charset ?? '';
         $this->_locales  = [];
 
         // For windows systems we are doing this way
@@ -142,7 +118,7 @@ final class Locale
             if ( ! empty( $cid ) )
             {
 
-                // explode at dot '.'. It separates the CID from a my defined character set
+                // explode at dot '.'. It separates the CID from a defined character set
                 $tmp = \explode( '.', $cid, 2 );
 
                 // If a character set is defined
@@ -153,7 +129,6 @@ final class Locale
                     $cset .= $tmp[ 1 ];
 
                     // Remove the charset from the CID
-                    /** @noinspection MultiAssignmentUsageInspection */
                     $cid   = $tmp[ 0 ];
 
                     // Build all usable Locales
@@ -209,12 +184,12 @@ final class Locale
 
     }
 
-    // </editor-fold>
+    #endregion
 
 
-    // <editor-fold desc="// – – –   P U B L I C   M E T H O D S   – – – – – – – – – – – – – – – – – – – – – – – –">
+    #region // – – –   P U B L I C   M E T H O D S   – – – – – – – – – – – – – – – – – – – – – – – –
 
-    // <editor-fold desc="// - - -   G E T T E R   - - - - - - - - - - - - - - - - - - - - - -">
+    #region // - - -   G E T T E R   - - - - - - - - - - - - - - - - - - - - - -
 
     /**
      * Returns the current defined 2 char language ID
@@ -224,7 +199,7 @@ final class Locale
     public function getLID() : string
     {
 
-        return $this->_language;
+        return $this->language;
 
     }
 
@@ -248,7 +223,7 @@ final class Locale
     public function getCID() : string
     {
 
-        return $this->_country;
+        return $this->country;
 
     }
 
@@ -272,7 +247,7 @@ final class Locale
     public function getCharset() : string
     {
 
-        return $this->_charset;
+        return $this->charset;
 
     }
 
@@ -288,7 +263,7 @@ final class Locale
 
     }
 
-    // </editor-fold>
+    #endregion
 
     /**
      * Overrides the magic __toString method.
@@ -298,9 +273,9 @@ final class Locale
     public function __toString() : string
     {
 
-        return $this->_language
-             .  ( ! empty( $this->_country ) ? '_' . $this->_country : '' )
-             .  ( ! empty( $this->_charset ) ? '.' . $this->_charset : '' );
+        return $this->language
+             .  ( ! empty( $this->country ) ? '_' . $this->country : '' )
+             .  ( ! empty( $this->charset ) ? '.' . $this->charset : '' );
 
     }
 
@@ -312,27 +287,27 @@ final class Locale
     public function registerAsGlobalInstance() : Locale
     {
 
-        static::$_instance = $this;
+        Locale::$_instance = $this;
         return $this;
 
     }
 
-    // </editor-fold>
+    #endregion
 
 
-    // <editor-fold desc="// – – –   P U B L I C   S T A T I C   M E T H O D S   – – – – – – – – – – – – – – – – –">
+    #region // – – –   P U B L I C   S T A T I C   M E T H O D S   – – – – – – – – – – – – – – – – –
 
     /**
      * Tries to create a new Locale instance from an specific URL path part. If no URL path part is defined
      * it uses $_SERVER[ 'REQUEST_URI' ] or $_SERVER[ 'SCRIPT_URL' ] otherwise.
      *
-     * @param Locale $refLocale Returns the Locale instance if the method return TRUE.
+     * @param Locale|null $refLocale Returns the Locale instance if the method return TRUE.
      * @param string|null $urlPath
+     *
      * @return bool
      */
-    public static function TryParseUrlPath( &$refLocale, string $urlPath = null ) : bool
+    public static function TryParseUrlPath( ?Locale &$refLocale = null, string $urlPath = null ) : bool
     {
-
 
         if ( empty( $urlPath ) )
         {
@@ -378,13 +353,14 @@ final class Locale
      * - 'lc'
      * - 'lng'
      *
-     * @param  Locale $refLocale Returns the Locale instance if the method return TRUE.
-     * @param  array $requestData The array with the data that should be used for getting local info from.
-     * @param  array $acceptedKeys
+     * @param Locale|null $refLocale   Returns the Locale instance if the method return TRUE.
+     * @param  array      $requestData The array with the data that should be used for getting local info from.
+     * @param  array      $acceptedKeys
+     *
      * @return bool
      */
     public static function TryParseArray(
-        &$refLocale, array $requestData, array $acceptedKeys = [ 'locale', 'language', 'lang', 'loc', 'lc', 'lng' ] )
+        ?Locale &$refLocale, array $requestData, array $acceptedKeys = [ 'locale', 'language', 'lang', 'loc', 'lc', 'lng' ] )
         : bool
     {
 
@@ -429,10 +405,10 @@ final class Locale
     /**
      * Tries to create a new Locale instance from underlying system/OS locale settings.
      *
-     * @param  Locale $refLocale Returns the Locale instance if the method return TRUE.
+     * @param Locale|null $refLocale Returns the Locale instance if the method return TRUE.
      * @return bool
      */
-    public static function TryParseSystem( &$refLocale ) : bool
+    public static function TryParseSystem( ?Locale &$refLocale = null ) : bool
     {
 
         // Getting the current system used locale of LC_ALL
@@ -524,10 +500,10 @@ final class Locale
     /**
      * Tries to create a new Locale instance from browser defined Accept-Language header.
      *
-     * @param Locale $refLocale  Returns the Locale instance if the method return TRUE.
+     * @param Locale|null $refLocale Returns the Locale instance if the method return TRUE.
      * @return bool
      */
-    public static function TryParseBrowserInfo( &$refLocale ) : bool
+    public static function TryParseBrowserInfo( ?Locale &$refLocale = null ) : bool
     {
 
         // If init by browser info is disabled, or the required $_SERVER['HTTP_ACCEPT_LANGUAGE'] is not defined
@@ -623,7 +599,7 @@ final class Locale
         : Locale
     {
 
-        if ( $useUrlPath && static::TryParseUrlPath( $refLocale ) )
+        if ( $useUrlPath && Locale::TryParseUrlPath( $refLocale ) )
         {
             return $refLocale;
         }
@@ -680,14 +656,14 @@ final class Locale
      *
      * @return Locale|null
      */
-    public static function GetGlobalInstance()
+    public static function GetGlobalInstance(): ?Locale
     {
 
         return self::$_instance;
 
     }
 
-    // </editor-fold>
+    #endregion
 
 
     private function addLocaleStrings( string $language, ?string $country = null, ?string $charset = null )
@@ -695,13 +671,9 @@ final class Locale
 
         if ( empty( $charset ) )
         {
-            if ( empty( $country ) )
+            $this->_locales[] = $language;
+            if ( ! empty( $country ) )
             {
-                $this->_locales[] = $language;
-            }
-            else
-            {
-                $this->_locales[] = $language;
                 $this->_locales[] = $language . '_' . $country;
                 $this->_locales[] = $language . '-' . $country;
             }

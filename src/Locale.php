@@ -67,6 +67,10 @@ final class Locale
      */
     private array $_locales;
 
+    private string $country;
+
+    private string $charset;
+
     #endregion
 
 
@@ -87,14 +91,16 @@ final class Locale
     /**
      * Init a new instance
      *
-     * @param  string $language The current used language (2 characters in lower case. e.g.: 'de')
-     * @param  string $country  The optional country id (2 characters in upper case. e.g.: 'AT')
-     * @param  string $charset  The optional charset (e.g. 'UTF-8')
+     * @param string      $language The current used language (2 characters in lower case. e.g.: 'de')
+     * @param string|null $country  The optional country id (2 characters in upper case. e.g.: 'AT')
+     * @param string|null $charset  The optional charset (e.g. 'UTF-8')
      */
     public function __construct(
-        private string $language, private string $country = '', private string $charset = '' )
+        private string $language, ?string $country = null, ?string $charset = null )
     {
 
+        $this->country  = $country ?? '';
+        $this->charset  = $charset ?? '';
         $this->_locales  = [];
 
         // For windows systems we are doing this way

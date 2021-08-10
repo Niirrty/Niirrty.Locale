@@ -447,7 +447,7 @@ final class Locale
                     // Get the elements of the current LCID
                     $localeData = LocaleHelper::ExpandLCID( $lcid );
                     // Create a new instance and return TRUE
-                    $refLocale = new Locale( $localeData[ 'language' ] ?? '', $localeData[ 'country' ] ?? '', $localeData[ 'charset' ] ?? '' );
+                    $refLocale = new Locale( $localeData[ 'language' ], $localeData[ 'country' ], $localeData[ 'charset' ] );
                     return true;
                 }
 
@@ -473,7 +473,7 @@ final class Locale
 
             if ( $foundLocale )
             {
-                $refLocale = new Locale( $localeData[ 'language' ], $localeData[ 'country' ] ?? '', $localeData[ 'charset' ] ?? '' );
+                $refLocale = new Locale( $localeData[ 'language' ], $localeData[ 'country' ], $localeData[ 'charset' ] );
                 return true;
             }
 
@@ -491,7 +491,7 @@ final class Locale
 
         $localeData = LocaleHelper::ExpandLCID( $lcString );
 
-        $refLocale = new Locale( $localeData[ 'language' ], $localeData[ 'country' ] ?? '', $localeData[ 'charset' ] ?? '' );
+        $refLocale = new Locale( $localeData[ 'language' ], $localeData[ 'country' ], $localeData[ 'charset' ] );
 
         return true;
 
@@ -573,7 +573,7 @@ final class Locale
             }
 
             // Init the new Locale instance and return it.
-            $refLocale = new Locale( $la, $co ?? '', $cs ?? '' );
+            $refLocale = new Locale( $la, $co, $cs );
 
             return true;
 
@@ -708,7 +708,7 @@ final class Locale
             ? null
             : $matches[ 5 ];
 
-        return new Locale( $lid, $cid ?? '', $charset ?? '' );
+        return new Locale( $lid, $cid, $charset );
 
     }
 

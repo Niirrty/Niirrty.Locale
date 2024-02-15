@@ -19,7 +19,7 @@ namespace Niirrty\Locale;
  *
  * There are different sources where a locale can come from.
  *
- * For it i have implemented 5 different ways + the constructor to initialize a locale.
+ * For it there are implemented 5 different ways + the constructor to initialize a locale.
  *
  * You can use it in combination like
  *
@@ -50,7 +50,7 @@ namespace Niirrty\Locale;
  * }
  * </code>
  *
- * but {@see \Niirrty\Locale\Locale::Create()} does finally the same.
+ * but {@see Locale::Create} does finally the same.
  *
  * @since  v0.1.0
  */
@@ -96,7 +96,7 @@ final class Locale
      * @param string|null $charset  The optional charset (e.g. 'UTF-8')
      */
     public function __construct(
-        private string $language, ?string $country = null, ?string $charset = null )
+        private readonly string $language, ?string $country = null, ?string $charset = null )
     {
 
         $this->country  = $country ?? '';
@@ -210,7 +210,7 @@ final class Locale
     }
 
     /**
-     * This is a alias of {@see \Niirrty\Locale\Locale::getLID()}.
+     * This is a alias of {@see Locale::getLID}.
      *
      * @return string
      */
@@ -234,7 +234,7 @@ final class Locale
     }
 
     /**
-     * This is a alias of {@see \Niirrty\Locale\Locale::getCID()}.
+     * This is a alias of {@see Locale::getCID}.
      *
      * @return string
      */
@@ -376,8 +376,8 @@ final class Locale
             return false;
         }
 
-        $requestData  = \array_change_key_case( $requestData , \CASE_LOWER );
-        $acceptedKeys = \array_change_key_case( $acceptedKeys, \CASE_LOWER );
+        $requestData  = \array_change_key_case( $requestData  );
+        $acceptedKeys = \array_change_key_case( $acceptedKeys );
         $localeString = null;
 
         foreach ( $acceptedKeys as $key )
@@ -672,7 +672,7 @@ final class Locale
     #endregion
 
 
-    private function addLocaleStrings( string $language, ?string $country = null, ?string $charset = null )
+    private function addLocaleStrings( string $language, ?string $country = null, ?string $charset = null ) : void
     {
 
         if ( empty( $charset ) )

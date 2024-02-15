@@ -28,7 +28,7 @@ abstract class LocaleHelper
     #region // - WIN_LOCALES -
     /**
      * With this array you are able to convert a windows typical locale definition like
-     * <code style="color: blue">German_Germany</code> to a LCID like <code style="color: blue">de_DE</code>
+     * <code style="color: blue">German_Germany</code> to an LCID like <code style="color: blue">de_DE</code>
      *
      * But do not use it directly (you can do it at your own risk). Use the Method ConvertWinToLCID(...)
      *
@@ -281,7 +281,7 @@ abstract class LocaleHelper
             return false;
         }
 
-        // Return the Windows locale with a may appended charset
+        // Return the Windows locale with a maybe appended charset
         return $winLocale . $charset;
 
     }
@@ -375,12 +375,11 @@ abstract class LocaleHelper
     {
 
         $output = [
-            'language' => '',
             'charset'  => '',
             'country'  => ''
         ];
 
-        // ignore things like @euro at the end of a LCID
+        // ignore things like @euro at the end of LCID
         $tmp1    = \explode( '@', $lcid, 2 );
 
         // Split at first dot '.' to max 2 elements
